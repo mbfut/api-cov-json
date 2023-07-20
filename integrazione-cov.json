@@ -1,0 +1,608 @@
+{
+   "openapi": "3.0.0",
+   "info": {
+      "title": "Integrazione API Cantieri COV",
+      "description": "## Localizzazione cantieri\nPer testare l'API occorre:\n\n1. Accedere a [Postman](https://www.postman.com/).\n2. Nella barra selezionare **GET** e scrivere l'indirizzo: [http://192.168.1.47:8080/CantieriRest/rest/Login](http://192.168.1.47:8080/CantieriRest/rest/Login).\n3. Nel menu dropdown selezionare **Authorization**. Come Type **Basic Auth** e inserire il vostro username e password.\n4. L'API risponde con il token. Copiare il token. Esempio:\n    ```json\n    {\n      \"user\": \"INST\",\n      \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoIjoiSW50ZXJuYSIsImlzcyI6ImF1dGhmdXR1cmEiLCJleHAiOjE2ODk3MTMwMDYsImlhdCI6MTY4OTY4NDIwNiwidXNlciI6IklOU1QifQ.dEQN5NrIpLKyhoK__rtTzRgx3hRv_XqzbJHRL-6t8X0\"\n    }\n    ```\n\n4. Nella barra scrivere l'indirizzo [http://192.168.1.47:8080/CantieriRest/rest/Cantieri/all](http://192.168.1.47:8080/CantieriRest/rest/Cantieri/all).\n5. Nel menu dropdown selezionare **Authorization**. Come Type **Bearer Token** e incollare il token.\n6. Nel menu dropdown selezionare **Body** e inserire i campi da filtrare. Esempio:\n    ```json\n    {\n      \"progressivakm\": \"218\",\n      \"corsiae\": \"true\"\n    }\n    ```\n7. Nella barra selezionare **POST** e scrivere l'indirizzo [http://192.168.1.47:8080/CantieriRest/rest/Cantieri/SetStato](http://192.168.1.47:8080/CantieriRest/rest/Cantieri/SetStato)\n8. Nel menu dropdown selezionare **Body**\n  ```json\n    {\n      \"idcantiere\": \"766\",\n      \"stato\": \"chiuso\",\n      \"note\": \"note chisura\"\n    }\n  ```\n",
+      "version": "1.0.1",
+      "termsOfService": "https://futurasistemi.it/informazioni_legali.php",
+      "contact": {
+         "name": "API Support",
+         "email": "info@futurasistemi.it",
+         "url": "futurasistemi.it"
+      },
+      "license": {
+         "name": "License Apache 2.0",
+         "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+   },
+   "servers": [
+      {
+         "url": "http://192.168.1.47:8080/CantieriRest/rest/Cantieri/"
+      }
+   ],
+   "tags": [
+      {
+         "name": "Cantieri\\cantiereid"
+      },
+      {
+         "name": "Cantieri\\all"
+      },
+      {
+         "name": "Cantieri\\SetStato"
+      },
+      {
+         "name": "Imprese\\all"
+      },
+      {
+         "name": "Imprese\\cantiere"
+      }
+   ],
+   "components": {
+      "schemas": {
+         "ImpreseCantiere": {
+            "type": "object",
+            "properties": {
+               "idcantiere": {
+                  "type": "string"
+               },
+               "idimpresa": {
+                  "type": "string"
+               },
+               "desimpresa": {
+                  "type": "string"
+               },
+               "capocantiere": {
+                  "type": "string"
+               },
+               "cellularecapocantiere": {
+                  "type": "string"
+               },
+               "telufficiocapocantiere": {
+                  "type": "string"
+               }
+            }
+         },
+         "Imprese": {
+            "type": "object",
+            "properties": {
+               "idimpresa": {
+                  "type": "string"
+               },
+               "desimpresa": {
+                  "type": "string"
+               },
+               "telufficioimpresa": {
+                  "type": "string"
+               },
+               "responsabile": {
+                  "type": "string"
+               },
+               "telefono_resp": {
+                  "type": "string"
+               },
+               "status": {
+                  "type": "string"
+               }
+            }
+         },
+         "Cantiere": {
+            "type": "object",
+            "properties": {
+               "idtratta": {
+                  "type": "string"
+               },
+               "tipocantiere": {
+                  "type": "string"
+               },
+               "data": {
+                  "type": "string"
+               },
+               "note": {
+                  "type": "string"
+               },
+               "direzione": {
+                  "type": "string"
+               },
+               "nomecantiere": {
+                  "type": "string"
+               },
+               "tipolavorazione": {
+                  "type": "string"
+               },
+               "ordinanza": {
+                  "type": "string"
+               },
+               "progressivakm": {
+                  "type": "string"
+               },
+               "corsiae": {
+                  "type": "string"
+               },
+               "corsiam": {
+                  "type": "string"
+               },
+               "corsiamv": {
+                  "type": "string"
+               },
+               "corsias": {
+                  "type": "string"
+               },
+               "coordinate": {
+                  "type": "string"
+               },
+               "ditta": {
+                  "type": "string"
+               }
+            }
+         }
+      }
+   },
+   "paths": {
+      "/Cantieri/{cantiereid}/": {
+         "get": {
+            "operationId": "get_cantiere",
+            "summary": "Visualizza dati relativi ad un cantiere.",
+            "tags": [
+               "Cantieri\\cantiereid"
+            ],
+            "parameters": [
+               {
+                  "description": "Identificativo cantiere",
+                  "in": "path",
+                  "name": "cantiereid",
+                  "required": true,
+                  "schema": {
+                     "example": 766,
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Trovato cantiere"
+               },
+               "404": {
+                  "description": "Nessun Cantiere trovato"
+               }
+            }
+         },
+         "summary": "Ricerca per numero identificativo cantiere"
+      },
+      "/Cantieri/all/": {
+         "get": {
+            "operationId": "cantiere_filtri",
+            "description": "Nel body si possono specificare i seguenti filtri in formato JSON: `idtratta, tipocantiere, data, note, direzione, nomecantiere, tipolavorazione, ordinanza, progressivakm, corsiae, corsiam, corsiamv, corsias, coordinate, ditta`.\n\nL'API risponde con una lista di cantieri che soddisfano **tutti** i filtri. Se almeno uno dei filtri non è soddistatto, l'API risponde con una lista vuota.\nEsempio di filtri inseriti nel Body.\n\n  ```json\n    {\n      \"progressivakm\": \"218\",\n      \"corsiae\": \"true\"\n    }\n  ```\n\nEsempio di risposta API.\n\n  ```json\n    \"cantieri\": [\n      {\n        \"KmFine\": 305.4,\n        \"note\": \"\",\n        \"Ordinanza\": \"3569\",\n        \"Corsiae\": \"true\",\n        \"Corsias\": \"false\",\n        \"TipoLavorazione\": \"Manutenzione dei manufatti irrigui e di scolo\",\n        \"KmInizio\": 217.7,\n        \"Corsiam\": \"false\",\n        \"IDCANTIERE\": 766,\n        \"DataFine\": \"Sun Nov 05 00:00:00 CET 2023\",\n        \"Peso\": 0,\n        \"OraFine\": \"00:00\",\n        \"Corsiamv\": \"false\",\n        \"NickElemento\": \"\",\n        \"DataInizio\": \"Mon Nov 04 00:00:00 CET 2019\",\n        \"descantiere\": \"PRESTAZIONE DI SERVIZI PER LA PULIZIA RADICALE DI MANUFATTI IRRIGUI E DI SCOLO LUNGO L'AUTOSTRADA A/4 DAL KM. 217+700 AL KM. 305+313, TANGENZIALE SUD DI VERONA, TANGENZIALE EST DI VERONA, VARIANTE DI LONATO E TUTTE LE PERTINENZE ESTERNE. LOTTO 1.\",\n        \"Durata\": \"Giornaliero\",\n        \"CodElemento\": \"\",\n        \"TipoElemento\": \"\",\n        \"OraInizio\": \"00:00\",\n        \"Direzione\": \"VENEZ\",\n        \"Larghezza\": 0,\n        \"Limitazioni\": \"false\",\n        \"Tratta\": \"A4AAA\",\n        \"Lunghezza\": 0,\n        \"Altezza\": 0,\n        \"TipoChiusura\": \"Totale\",\n        \"DettElemento\": \"\",\n        \"TipoCantiere\": \"FISSO\",\n        \"DirLavori\": \"Turrina Luigi\",\n        \"NickDettElemento\": \"\"\n      },\n      {\n        \"KmFine\": 305.4,\n        \"note\": \"\",\n        \"Ordinanza\": \"3569\",\n        \"Corsiae\": \"true\",\n        \"Corsias\": \"false\",\n        \"TipoLavorazione\": \"Manutenzione dei manufatti irrigui e di scolo\",\n        \"KmInizio\": 217.7,\n        \"Corsiam\": \"false\",\n        \"IDCANTIERE\": 769,\n        \"DataFine\": \"Sun Nov 05 00:00:00 CET 2023\",\n        \"Peso\": 0,\n        \"OraFine\": \"00:00\",\n        \"Corsiamv\": \"false\",\n        \"NickElemento\": \"\",\n        \"DataInizio\": \"Mon Nov 04 00:00:00 CET 2019\",\n        \"descantiere\": \"PRESTAZIONE DI SERVIZI PER LA PULIZIA RADICALE DI MANUFATTI IRRIGUI E DI SCOLO LUNGO L'AUTOSTRADA A/4 DAL KM. 217+700 AL KM. 305+313, TANGENZIALE SUD DI VERONA, TANGENZIALE EST DI VERONA, VARIANTE DI LONATO E TUTTE LE PERTINENZE ESTERNE. LOTTO 1.\",\n        \"Durata\": \"Giornaliero\",\n        \"CodElemento\": \"\",\n        \"TipoElemento\": \"\",\n        \"OraInizio\": \"00:00\",\n        \"Direzione\": \"VENEZ\",\n        \"Larghezza\": 0,\n        \"Limitazioni\": \"false\",\n        \"Tratta\": \"A4AAA\",\n        \"Lunghezza\": 0,\n        \"Altezza\": 0,\n        \"TipoChiusura\": \"Totale\",\n        \"DettElemento\": \"\",\n        \"TipoCantiere\": \"MOBILE\",\n        \"DirLavori\": \"Turrina Luigi\",\n        \"NickDettElemento\": \"\"\n      },\n    ...\n```\n\nEsempio di risposta con lista vuota\n\n```json\n{\n  \"cantieri\": [],\n  \"numcantieri\": 0\n}\n```\n",
+            "tags": [
+               "Cantieri\\all"
+            ],
+            "parameters": [
+               {
+                  "description": "Trova cantieri con l'id tratta richiesta.",
+                  "in": "query",
+                  "name": "id_tratta",
+                  "required": false,
+                  "schema": {
+                     "example": 1,
+                     "type": "string",
+                     "x-examples": {
+                        "application/json": "{ foo: whatever, bar: whatever2 }"
+                     }
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Tipo Cantiere.",
+                  "in": "query",
+                  "name": "TipoCantiere",
+                  "required": false,
+                  "schema": {
+                     "example": "MOBILE o FISSO",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Data.",
+                  "in": "query",
+                  "name": "Data",
+                  "required": false,
+                  "schema": {
+                     "example": "Formato anno-mese-giorno, esempio 2023-07-17",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Direzione.",
+                  "in": "query",
+                  "name": "Direzione",
+                  "required": false,
+                  "schema": {
+                     "example": "VENEZ",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Nome Cantiere.",
+                  "in": "query",
+                  "name": "NomeCantiere",
+                  "required": false,
+                  "schema": {
+                     "example": "Esempio A4",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Tipo Lavorazione.",
+                  "in": "query",
+                  "name": "TipoLavorazione",
+                  "required": false,
+                  "schema": {
+                     "example": "Manutenzione",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Ordinanza.",
+                  "in": "query",
+                  "name": "Ordinanza",
+                  "required": false,
+                  "schema": {
+                     "example": "3569",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Progressiva Chilometrica.",
+                  "in": "query",
+                  "name": "Note",
+                  "required": false,
+                  "schema": {
+                     "example": "3569",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per CorsiaE (Emergenza).",
+                  "in": "query",
+                  "name": "CorsiaE",
+                  "required": false,
+                  "schema": {
+                     "example": "true",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per CorsiaM (Marcia).",
+                  "in": "query",
+                  "name": "CorsiaM",
+                  "required": false,
+                  "schema": {
+                     "example": "true",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per CorsiaMV (Marcia Veloce).",
+                  "in": "query",
+                  "name": "CorsiaMV",
+                  "required": false,
+                  "schema": {
+                     "example": "true",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per CorsiaS (Sorpasso).",
+                  "in": "query",
+                  "name": "CorsiaS",
+                  "required": false,
+                  "schema": {
+                     "example": "true",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Coordinate.",
+                  "in": "query",
+                  "name": "Coordinate",
+                  "required": false,
+                  "schema": {
+                     "example": "Da km ",
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra cantieri per Ditta.",
+                  "in": "query",
+                  "name": "Ditta",
+                  "required": false,
+                  "schema": {
+                     "example": "Nome ditta",
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Trovato cantiere",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Cantiere"
+                        },
+                        "example": {
+                           "idtratta": "766",
+                           "tipocantiere": "mobile",
+                           "data": "2020-04-20",
+                           "note": "",
+                           "direzione": "venez",
+                           "nomecantiere": "",
+                           "tipolavorazione": "",
+                           "ordinanza": "",
+                           "progressivakm": "",
+                           "corsiae": "",
+                           "corsiam": "",
+                           "corsiamv": "",
+                           "corsias": "",
+                           "coordinate": "",
+                           "ditta": ""
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "Nessun Cantiere trovato"
+               }
+            }
+         }
+      },
+      "/SetStato": {
+         "post": {
+            "operationId": "set_stato_cantiere",
+            "summary": "Aggiorna lo stato di un cantiere",
+            "tags": [
+               "Cantieri\\SetStato"
+            ],
+            "requestBody": {
+               "content": {
+                  "application/setstato+json": {
+                     "schema": {
+                        "properties": {
+                           "idcantiere": {
+                              "description": "L'identificativo del cantiere.",
+                              "example": "766",
+                              "type": "string"
+                           },
+                           "stato": {
+                              "description": "Lo stato del cantiere può essere aperto o chiuso.",
+                              "example": "chiuso",
+                              "type": "string"
+                           },
+                           "note": {
+                              "description": "Note stato cantiere",
+                              "example": "note chisura",
+                              "type": "string"
+                           }
+                        },
+                        "required": [
+                           "idcantiere",
+                           "stato"
+                        ],
+                        "type": "object"
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": {
+               "200": {
+                  "description": "Aggiornato stato cantiere"
+               },
+               "400": {
+                  "description": "Un parametro non è valido."
+               },
+               "403": {
+                  "description": "L'utente non può aggiornate lo stato."
+               }
+            }
+         }
+      },
+      "/Imprese/all/": {
+         "get": {
+            "operationId": "imprese_filtri",
+            "description": "Nel body si possono specificare i seguenti filtri in formato JSON: `idimpresa, desimpresa, telufficioimpresa, responsabile, telefono_resp`.\n\nL'API risponde con una lista di imprese che soddisfano **tutti** i filtri. Se almeno uno dei filtri non è soddistatto, l'API risponde con una lista vuota.\n",
+            "tags": [
+               "Imprese\\all"
+            ],
+            "parameters": [
+               {
+                  "description": "Trova l'impresa con l'id inserito.",
+                  "in": "query",
+                  "name": "idimpresa",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "idimpresa": "21"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese che contengono i caratteri inseriti in Descrizione/Denominazione Impresa.",
+                  "in": "query",
+                  "name": "desimpresa",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "desimpresa": "Costruzioni"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese per numero di telefono UfficioImpresa.",
+                  "in": "query",
+                  "name": "telufficioimpresa",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "telufficioimpresa": "042"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese per il nome del Responsabile.",
+                  "in": "query",
+                  "name": "responsabile",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "responsabile": "Ing."
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese per numero di telefono del Responsabile.",
+                  "in": "query",
+                  "name": "telefono_resp",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "telefono_resp": "348"
+                     },
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Trovato imprese",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Imprese"
+                        },
+                        "example": {
+                           "idimpresa": "21",
+                           "desimpresa": "Costruzioni",
+                           "telufficioimpresa": "042",
+                           "responsabile": "Ing.",
+                           "telefono_resp": "345"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "Nessuna impresa trovata"
+               }
+            }
+         }
+      },
+      "/Imprese/cantiere/": {
+         "get": {
+            "operationId": "imprese_cantiere_filtri",
+            "description": "Nel body si possono specificare i seguenti filtri in formato JSON: `idcantiere, idimpresa, desimpresa, capocantiere, cellularecapocantiere, telufficiocapocantiere`.\n\nL'API risponde con una lista di imprese che soddisfano **tutti** i filtri. Se almeno uno dei filtri non è soddistatto, l'API risponde con una lista vuota.\n",
+            "tags": [
+               "Imprese\\cantiere"
+            ],
+            "parameters": [
+               {
+                  "description": "Trova le imprese che lavorano nel cantiere con l'id inserito.",
+                  "in": "query",
+                  "name": "idcantiere",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "idcantiere": "766"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Identificativo impresa.",
+                  "in": "query",
+                  "name": "idimpresa",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "idimpresa": "21"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese che contengono i caratteri inseriti in Descrizione/Denominazione Impresa.",
+                  "in": "query",
+                  "name": "desimpresa",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "desimpresa": "Costruzioni"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese per numero di telefono UfficioImpresa.",
+                  "in": "query",
+                  "name": "capocantiere",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "capocantiere": "COSTRUZIONI"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese per il nome del Responsabile.",
+                  "in": "query",
+                  "name": "cellularecapocantiere",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "cellularecapocantiere": "348"
+                     },
+                     "type": "string"
+                  }
+               },
+               {
+                  "description": "Filtra imprese per numero di telefono del Responsabile.",
+                  "in": "query",
+                  "name": "telufficiocapocantiere",
+                  "required": false,
+                  "schema": {
+                     "example": {
+                        "telufficiocapocantiere": "042"
+                     },
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Trovato imprese",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/ImpreseCantiere"
+                        },
+                        "example": {
+                           "idcantiere": "766",
+                           "idimpresa": "21",
+                           "desimpresa": "Costruzioni",
+                           "capocantiere": "Ing.",
+                           "cellularecapocantiere": "345",
+                           "telufficiocapocantiere": "042"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "Nessuna impresa trovata"
+               }
+            }
+         }
+      }
+   }
+}
